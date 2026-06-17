@@ -1,6 +1,7 @@
 from flask import Flask, request
 import psycopg
 import os
+import datetime
 from dotenv import load_dotenv
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -16,15 +17,19 @@ def home():
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS notes (
                         id SERIAL PRIMARY KEY,
-                        content TEXT
+                        content TEXT,
+                        date DATE,
+                        time TIME
                 )
             """) 
 
             if request.method == "POST":
                 note = request.form["note"]
+                date = datetime.datetime.now().date()
+                time = datetime.datetime.now().time()
                 cur.execute(
-                    "INSERT INTO notes (content) VALUES (%s)",
-                    (note,)
+                    "INSERT INTO notes (content, date, time) VALUES (%s, %s, %s)",
+                    (note,date,time)
                 )
             
             cur.execute(
