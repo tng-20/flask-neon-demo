@@ -25,8 +25,9 @@ def home():
 
             if request.method == "POST":
                 note = request.form["note"]
-                date = datetime.datetime.now().date()
-                time = datetime.datetime.now().time()
+                currentDateTime = datetime.datetime.now()
+                date = currentDateTime.date()
+                time = currentDateTime.time()
                 cur.execute(
                     "INSERT INTO notes (content, date, time) VALUES (%s, %s, %s)",
                     (note,date,time)
